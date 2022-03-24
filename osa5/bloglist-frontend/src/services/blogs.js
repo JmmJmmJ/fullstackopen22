@@ -20,4 +20,16 @@ const create = async (newObject) => {
   return response.data;
 };
 
-export default { getAll, create, setToken };
+const update = (id, newObject) => {
+  const request = axios.put(`${baseUrl}/${id}`, newObject);
+  return request.then((response) => response.data);
+};
+
+const del = (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  return axios.delete(`${baseUrl}/${id}`, config);
+};
+
+export default { getAll, create, update, del, setToken };
