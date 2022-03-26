@@ -45,8 +45,9 @@ const App = () => {
         username,
         password,
       })
-      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
       setUser(user)
+      blogService.setToken(user.token)
+      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -103,6 +104,14 @@ const App = () => {
     }
   }
 
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5,
+  }
+
   if (user === null) {
     return (
       <div>
@@ -118,6 +127,10 @@ const App = () => {
       </div>
     )
   }
+  const blogsWithButton = blogs.map((blog) => ({
+    ...blog,
+    button: user.username === blog.user.username ? '' : 'none',
+  }))
 
   return (
     <div>
@@ -130,14 +143,22 @@ const App = () => {
       <Togglable buttonLabel="add blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          addLike={() => addLike(blog.id)}
-          removeBlog={() => removeBlog(blog.id)}
-          username={user.username}
-        />
+      {blogsWithButton.map((blog) => (
+        <div key={blog.id} style={blogStyle}>
+          <Blog
+            blog={blog}
+            addLike={() => addLike(blog.id)}
+            removeBlog={() => removeBlog(blog.id)}
+            username={user.username}
+          />
+          <div
+            style={{
+              display: blogsWithButton.button,
+            }}
+          >
+            <button onClick={() => removeBlog(blog.id)}>remove</button>
+          </div>
+        </div>
       ))}
     </div>
   )

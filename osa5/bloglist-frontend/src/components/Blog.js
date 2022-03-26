@@ -8,30 +8,17 @@ const Blog = ({ blog, addLike, removeBlog, username }) => {
     setVisible(!visible)
   }
 
-  const showButton = { display: username === blog.user.username ? '' : 'none' }
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-
   return (
-    <div style={blogStyle}>
-      {blog.title}{' '}
+    <div>
+      <div>
+        {blog.title} <div>{blog.author}</div>
+      </div>
       <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
+        <div>{blog.url}</div>
         <br></br>
-        {blog.author}
-        <br></br>
-        {blog.url}
-        <br></br>
-        likes {blog.likes} <button onClick={addLike}>like</button>
-        <br></br>
-        <div style={showButton}>
-          <button onClick={removeBlog}>remove</button>
+        <div>
+          likes {blog.likes} <button onClick={addLike}>like</button>
         </div>
       </div>
     </div>
